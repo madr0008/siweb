@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Clases - Retofit</title>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/Banner-Heading-Image.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.css">
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-light navbar-expand-md" style="height: 70px;">
+        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/clientes/">
+                <div class="sidebar-brand-text mx-3" style="margin: 0px;margin-right: 16px;margin-left: 20px;height: 39.2px;"><img src="{{ url_for('.static', filename='img/logo.png') }}" style="width: 150px;"></div>
+            </a>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" src="{{ url_for('.static', filename='img/avatars/avatar1.jpeg') }}" style="height:50px;"></a>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="/clientes/perfil"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Perfil</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ url_for('clientes.logout') }}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(59,153,224);">
+            <div class="container-fluid d-flex flex-column p-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/clientes/dieta"><i class="fas fa-apple-alt"></i><span>Dieta</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/clientes/clases"><i class="far fa-calendar-alt"></i><span><strong>Clases</strong></span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/clientes/rutina"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                                <path d="M20.2739 9.86883L16.8325 4.95392L18.4708 3.80676L21.9122 8.72167L20.2739 9.86883Z" fill="currentColor"></path>
+                                <path d="M18.3901 12.4086L16.6694 9.95121L8.47783 15.687L10.1985 18.1444L8.56023 19.2916L3.97162 12.7383L5.60992 11.5912L7.33068 14.0487L15.5222 8.31291L13.8015 5.8554L15.4398 4.70825L20.0284 11.2615L18.3901 12.4086Z" fill="currentColor"></path>
+                                <path d="M20.7651 7.08331L22.4034 5.93616L21.2562 4.29785L19.6179 5.445L20.7651 7.08331Z" fill="currentColor"></path>
+                                <path d="M7.16753 19.046L3.72607 14.131L2.08777 15.2782L5.52923 20.1931L7.16753 19.046Z" fill="currentColor"></path>
+                                <path d="M4.38208 18.5549L2.74377 19.702L1.59662 18.0637L3.23492 16.9166L4.38208 18.5549Z" fill="currentColor"></path>
+                            </svg><span>Rutina</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div class="container">
+                <div>
+                    <h3 class="text-dark mb-4"></h3>
+                </div>
+                <h1 class="text-dark mb-4">Horario de clases</h1>
+            </div>
+            {% with mensajes = get_flashed_messages() %}
+                {% if mensajes %}
+                    {% for m in mensajes %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ m }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="container">
+                <div class="row">
+                    <div class="col"><a href="/clientes/clases/{{ lunes }}_-"><button class="btn btn-primary float-start" type="button">Anterior</button></a></div>
+                    <div class="col-6">
+                        <h5 class="text-center">Semana del {{ dias.0 }} al {{ dias.4 }}</h5>
+                    </div>
+                    <div class="col"><a href="/clientes/clases/{{ lunes }}_+"><button class="btn btn-primary float-end" type="button">Siguiente</button></a></div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h1></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><strong>Lunes</strong></th>
+                            <th><strong>Martes</strong></th>
+                            <th><strong>Miércoles</strong></th>
+                            <th><strong>Jueves</strong></th>
+                            <th><strong>Viernes</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(8) %}
+                            <tr>
+                                <td class="fw-bolder" style="text-align: left;"><strong>{{ horas[i] }}</strong></td>
+                                {% for j in range(5) %}
+                                    {% if (dias[j],i) in clasesApuntado %}
+                                        <td><button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#modal_clase_des" onClick="funcion2('{{ clases[dias[j],i][0] }}', '{{horas[i]}}', '{{dias[j]}}', '{{i}}', '{{ clases[dias[j],i][2] }}')" style="background: rgb(156, 240, 170);">{{ clases[dias[j],i][0] }} </button></td>
+                                    {% elif (dias[j],i) in clases %}
+                                        {% if clases[(dias[j],i)].2 > 0 %}
+                                            <td><button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#modal_clase_disp" id="{{ dias[j] }}_{{ i }}" onClick="funcion('{{ clases[dias[j],i][0] }}', '{{horas[i]}}', '{{dias[j]}}', '{{i}}', '{{ clases[dias[j],i][2] }}')" style="background: rgb(59,153,224);">{{ clases[dias[j],i][0] }} </button></td>
+                                        {% else %}
+                                            <td><button class="btn btn-primary btn-lg" type="button" style="background: rgb(243, 116, 116);">{{ clases[dias[j],i][0] }} </button></td>
+                                        {% endif %}
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Retofit 2022</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal_clase_disp">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Apuntarse a la clase</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id = "formulario" action="" method="POST">
+                    <div class="modal-body">
+                        <h5 class="modal-title" id="fecha-hora"></h5>
+                        <br>
+                        <p id="plazas"></p>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cerrar</button><button class="btn btn-light" type="submit" data-bs-dismiss="modal" style="background: rgb(59,153,224);color: rgb(255,255,255);">Apuntarse</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal_clase_des">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Desapuntarse de la clase</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id = "formulario2" action="" method="POST">
+                    <div class="modal-body">
+                        <h5 class="modal-title" id="fecha-hora2"></h5>
+                        <br>
+                        <p id="plazas2"></p>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cerrar</button><button class="btn btn-light" type="submit" data-bs-dismiss="modal" style="background: rgb(243, 116, 116);color: rgb(255,255,255);">Desapuntarse</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('.static', filename='js/Simple-Slider.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/theme.js') }}"></script>
+    <script type="text/javascript">
+        function funcion(nombre, hora, dia, tramo, plazas){
+            var str = nombre + " el día " + dia + " en el tramo " + hora;
+            document.getElementById("formulario").action = "/clientes/apuntar_a_clase/" + dia + "_" + tramo;
+            document.getElementById("fecha-hora").innerHTML = str;
+            document.getElementById("plazas").innerHTML = plazas;
+       }
+       function funcion2(nombre, hora, dia, tramo, plazas){
+            var str = nombre + " el día " + dia + " en el tramo " + hora;
+            document.getElementById("formulario2").action = "/clientes/desapuntar_de_clase/" + dia + "_" + tramo;
+            document.getElementById("fecha-hora2").innerHTML = str;
+            document.getElementById("plazas2").innerHTML = plazas;
+       }
+   </script>
+</body>
+
+</html>

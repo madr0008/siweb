@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin - Retofit</title>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/Nunito.css') }}">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-light navbar-expand-md" style="height: 70px;">
+        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-text mx-3" style="margin: 0px;margin-right: 16px;margin-left: 20px;height: 39.2px;"><img src="{{ url_for('.static', filename='img/logo.png') }}" style="width: 150px;"></div>
+            </a>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="{{ url_for('.static', filename='img/avatars/avatar1.jpeg') }}"></a>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="/admin/perfil"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Perfil</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ url_for('admin.logout') }}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(59,153,224);">
+            <div class="container-fluid d-flex flex-column p-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/admin/calendario"><i class="far fa-calendar-alt"></i><span>Calendario</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/clientes"><i class="fas fa-user"></i><span>Clientes</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/trabajadores"><i class="fas fa-user"></i><span>Trabajadores</span></a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0"></h3>
+                    </div>
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h1 class="text-dark mb-0">Bienvenido, {{ current_user.nombre }}</h1>
+                    </div>
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0"></h3>
+                    </div>
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h2 class="text-dark mb-0">Resumen</h2>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card shadow border-start-success py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>CLASES</span></div>
+                                            <div class="text-dark fw-bold h5 mb-0"><span>{{ nClases }}</span></div>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card shadow border-start-primary py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>CLIENTES (ESTE MES)</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0"><span>{{ nClientes }}</span></div>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-users fa-2x text-gray-300"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card shadow border-start-success py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>TRABAJADORES</span></div>
+                                            <div class="text-dark fw-bold h5 mb-0"><span>{{ nTrabajadores }}</span></div>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-users fa-2x text-gray-300"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <br>
+                            <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                                <h3 class="text-dark mb-0">Accesos directos</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4"><a href="/admin/calendario">
+                                <div class="card textwhite bg-primary text-white shadow" style="--bs-primary: rgb(59,153,224);--bs-primary-rgb: 59,153,224;">
+                                    <div class="card-body">
+                                        <p class="m-0" style="text-align: center;">Calendario</p>
+                                    </div>
+                                </div>
+                            </a></div>
+                        <div class="col-md-4"><a href="/admin/clientes">
+                                <div class="card textwhite bg-secondary text-white shadow">
+                                    <div class="card-body">
+                                        <p class="m-0" style="text-align: center;">Clientes</p>
+                                        <p class="text-white-50 small m-0"></p>
+                                    </div>
+                                </div>
+                            </a></div>
+                        <div class="col-md-4"><a href="/admin/trabajadores">
+                                <div class="card textwhite bg-info text-white shadow">
+                                    <div class="card-body">
+                                        <p class="m-0" style="text-align: center;">Trabajadores</p>
+                                    </div>
+                                </div>
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Retofit 2022</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>
