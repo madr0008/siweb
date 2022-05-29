@@ -125,7 +125,7 @@ def elegir_rutina() :
     for intensidad in intensidades :
         cur.execute('SELECT * FROM rutinas WHERE intensidad = %s', [intensidad])
         rutinas[intensidad] = cur.fetchall()
-        foto = "default.jpeg"
+    foto = "default.jpeg"
     if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
         foto = str(current_user.dni) + '.' + current_user.extension
     return render_template('elegir_rutina.html', rutinas = rutinas, foto = foto)
@@ -138,7 +138,7 @@ def elegir_rutina_id(id) :
         return redirect(url_for('public.login'))
     dni = current_user.dni
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO rutinas_clientes (dniCliente, idRutina) VALUES (%s, %s) ON DUPLICATE KEY UPDATE idrutina=%s', (dni, id, id))
+    cur.execute('INSERT INTO rutinas_clientes (dniCliente, idRutina) VALUES (%s, %s) ON DUPLICATE KEY UPDATE idRutina=%s', (dni, id, id))
     cur.connection.commit()
     return redirect('/clientes/rutina')
 
@@ -168,6 +168,86 @@ def cambiar_pesos() :
         cur.execute(sql, (pesos, dni))
         mysql.connection.commit()
         return redirect('/clientes')
+
+
+
+#Dieta
+
+@clientes.route('/clientes/dieta')
+@login_required
+def dieta() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    diaSemana = datetime.today().weekday()
+    diasSemana = ['lunes','martes','miercoles','jueves','viernes', 'sabado', 'domingo']
+    strDiaSemana = diasSemana[diaSemana]
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    if diaSemana > 4 :
+        return render_template('rutina_dieta_no.html', dia = strDiaSemana, foto = foto)
+    cur = mysql.connection.cursor()
+    sql = 'SELECT idDieta, ' + strDiaSemana + ' FROM dietas_clientes WHERE dniCliente = %s'
+    cur.execute(sql, [current_user.dni])
+    aux = cur.fetchone()
+    if aux != None :
+        idDieta = aux[0]
+        cur.execute('SELECT * FROM dietas WHERE id = %s', [idDieta])
+        datosDieta = cur.fetchone()
+        sql = 'SELECT ' + strDiaSemana + ' FROM dias_dietas WHERE idDieta = %s'
+        cur.execute(sql, [idDieta])
+        comis = cur.fetchone()[0].split(',')
+        comidas = list()
+        datosComidas = dict()
+        macros = list()
+        for comi in comis :
+                if len(comi) > 0 :
+                    campos = comi.split('-')
+                    comidas.append([int(campos[0]), int(campos[1])])
+                    cur.execute('SELECT * FROM comidas WHERE id = %s', [int(campos[0])])
+                    datosComidas[int(campos[0])] = cur.fetchone()
+                    if datosComidas[int(campos[0])][3] not in macros :
+                        macros.append(datosComidas[int(campos[0])][3])
+        strMacros = ""
+        for i in range(len(macros) - 1) :
+            strMacros += macros[i] + ", "
+        if len(macros) > 1 :
+            macros = strMacros[:len(strMacros) - 2] + " y " + macros[len(macros) - 1]
+        elif len(macros) == 1 :
+            macros = macros[len(macros) - 1]
+        return render_template('dieta_cliente.html', datosDieta = datosDieta, comidas = comidas, dia = strDiaSemana, datosComidas = datosComidas, macros = macros, foto = foto)
+    else :
+        return redirect('/clientes/elegir_dieta')
+
+
+@clientes.route('/clientes/elegir_dieta')
+@login_required
+def elegir_dieta() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    cur = mysql.connection.cursor()
+    objetivos = ['bajar peso','mantener peso','subir peso']
+    dietas = dict()
+    for objetivo in objetivos :
+        cur.execute('SELECT * FROM dietas WHERE objetivo = %s', [objetivo])
+        dietas[objetivo] = cur.fetchall()
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('elegir_dieta.html', dietas = dietas, foto = foto)
+
+
+@clientes.route('/clientes/elegir_dieta/<string:id>')
+@login_required
+def elegir_dieta_id(id) :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    dni = current_user.dni
+    cur = mysql.connection.cursor()
+    cur.execute('INSERT INTO dietas_clientes (dniCliente, idDieta) VALUES (%s, %s) ON DUPLICATE KEY UPDATE idDieta=%s', (dni, id, id))
+    cur.connection.commit()
+    return redirect('/clientes/dieta')
+
 
 
 #Sección clases

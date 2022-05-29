@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{ datosDieta.1 }} - Retofit</title>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/Banner-Heading-Image.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+    <link rel="icon" href="{{ url_for('.static', filename='img/icono.png') }}">
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-light navbar-expand-md" style="height: 70px;">
+        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/entrenadores/">
+                <div class="sidebar-brand-text mx-3" style="margin: 0px;margin-right: 16px;margin-left: 20px;height: 39.2px;"><img src="{{ url_for('.static', filename='img/logo.png') }}" style="width: 150px;"></div>
+            </a>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="/uploads/{{ foto }}"></a>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="/entrenadores/perfil"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Perfil</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ url_for('entrenadores.logout') }}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(59,153,224);">
+            <div class="container-fluid d-flex flex-column p-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/entrenadores/comidas"><i class="fas fa-apple-alt"></i><span>Comidas</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entrenadores/dietas"><i class="far fa-calendar-alt"></i><span><strong>Dietas</strong></span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entrenadores/ejercicios"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                                <path d="M20.2739 9.86883L16.8325 4.95392L18.4708 3.80676L21.9122 8.72167L20.2739 9.86883Z" fill="currentColor"></path>
+                                <path d="M18.3901 12.4086L16.6694 9.95121L8.47783 15.687L10.1985 18.1444L8.56023 19.2916L3.97162 12.7383L5.60992 11.5912L7.33068 14.0487L15.5222 8.31291L13.8015 5.8554L15.4398 4.70825L20.0284 11.2615L18.3901 12.4086Z" fill="currentColor"></path>
+                                <path d="M20.7651 7.08331L22.4034 5.93616L21.2562 4.29785L19.6179 5.445L20.7651 7.08331Z" fill="currentColor"></path>
+                                <path d="M7.16753 19.046L3.72607 14.131L2.08777 15.2782L5.52923 20.1931L7.16753 19.046Z" fill="currentColor"></path>
+                                <path d="M4.38208 18.5549L2.74377 19.702L1.59662 18.0637L3.23492 16.9166L4.38208 18.5549Z" fill="currentColor"></path>
+                            </svg><span>Ejercicios</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entrenadores/rutinas"><i class="far fa-calendar-alt"></i><span>Rutinas</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <ol class="breadcrumb" style="margin-top: 10px;margin-left: 10px;">
+                    <li class="breadcrumb-item"><a href="/entrenadores/"><span>Inicio</span></a></li>
+                    <li class="breadcrumb-item"><a href="/entrenadores/dietas"><span>Dietas</span></a></li>
+                    <li class="breadcrumb-item"><span>{{ datosDieta.1 }}</span></li>
+                </ol>
+                <div class="container">
+                    <div>
+                        <h3 class="text-dark mb-4"></h3>
+                    </div><h1 class="text-dark mb-4">{{ datosDieta.1 }}</h1>
+                    <div>
+                        <h3 class="text-dark mb-4"></h3>
+                    </div>
+                    <p>{{ datosDieta.2 }}</p>
+                    <div>
+                        <h3 class="text-dark mb-4"></h3>
+                    </div>
+                    <p><strong>Intensidad:</strong> {{ datosDieta.3 }}</p>
+                    <br>
+                        <h3 class="text-dark mb-0">Días</h3>
+                    <br>
+                </div>
+                
+                {% for dia in dieta %}
+                    <div class="row" style="margin: 0px;padding: 20px;width: auto;height: auto;" id="{{ dia }}">
+                        <div class="col" style="padding: 0px;min-width: auto;">
+                            <div class="card">
+                                <div class="card-body" style="height: auto;width: auto;">
+                                    <h4 class="card-title" style="color: rgb(0,0,0);">{{ dia }}</h4>
+                                    {% with mensajes = get_flashed_messages() %}
+                                        {% if mensajes %}
+                                            {% for m in mensajes %}
+                                                {% set aux = m.split('_') %}
+                                                {% if aux.1 == dia %}
+                                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                        {{ aux.0 }}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                    <h5 class="card-title" style="color: rgb(0,0,0);">Macronutrientes incluidos</h5>
+                                    <ul>
+                                        {% for g in macros[dia] %}
+                                            <li>{{ g }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <h5 class="card-title" style="color: rgb(0,0,0);">Comidas</h5>
+                                    <form action="/entrenadores/dietas/eliminar_comida_de_dieta/{{ datosDieta.0 }}_{{ dia }}" method="POST">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Comida</th>
+                                                        <th>Cantidad</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for comida in dieta[dia] %}
+                                                    <tr>
+                                                        <td><input type="checkbox" name="comidas" value="{{ comida.0 }}"></td>
+                                                        <td>{{ comidas[comida.0].1 }}</td>
+                                                        <td>{{ comida.1 }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col"><button class="btn btn-primary float-end" type="submit" style="background: rgb(225,21,21);margin-left: 2.5px;">Eliminar</button><button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#modal_add_comida" style="background: #4e73df;margin-right: 2.5px;" onClick="funcion('{{ datosDieta.0 }}', '{{ dia }}')">Añadir</button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Retofit 2022</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal_add_comida">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Añadir comidas</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST" id="formulario">
+                    <div class="modal-body">
+                            <p>Selecciona las comidas que deseas añadir</p>
+                            <table class="table" id="data">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Comida</th>
+                                        <th>Cantidad (gramos)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for comida in comidas %}
+                                        <tr>
+                                            <td><input class="form-check-input" type="checkbox" name="comidas" value="{{ comida }}"></td>
+                                            <td>{{ comidas[comida].1 }}</td>
+                                            <td><input type="number" name="cantidad_{{ comida }}" style="width:75px"></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cerrar</button><button class="btn btn-light" type="submit" data-bs-dismiss="modal" style="background: rgb(59,153,224);color: rgb(255,255,255);">Añadir</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('.static', filename='js/Simple-Slider.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/theme.js') }}"></script>
+    <script type="text/javascript">
+        function funcion(id, dia){
+            document.getElementById("formulario").action = "/entrenadores/dietas/add_comida_a_dieta/" + id + '_' + dia
+       }
+   </script>
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+   <script>
+       $(document).ready(function () {
+           $('#data').DataTable({
+               columns: [
+                   {searchable: false, orderable: false},
+                   {orderable: false},
+                   {searchable: false, orderable: false}
+               ],
+               paging: false,
+               ordering: false,
+               info: false,
+               "language": {
+                   lengthMenu: "Mostrar _MENU_ clientes por página",
+                   zeroRecords: "No se ha encontrado ningún cliente",
+                   info: "Mostrando página _PAGE_ de _PAGES_",
+                   infoEmpty: "No se ha encontrado ningún cliente",
+                   infoFiltered: "(Filtrando entre _MAX_ clientes)",
+                   searchPlaceholder: "Buscar",
+                   search: "",
+                   paginate: {
+                       previous: "Anterior",
+                       next: "Siguiente"
+                   }
+               }
+           });
+       });
+   </script>
+</body>
+
+</html>

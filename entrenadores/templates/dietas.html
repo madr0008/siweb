@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>{{ grupo }} - Retofit</title>
+    <title>Dietas - Retofit</title>
     <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
@@ -34,14 +34,14 @@
             <div class="container-fluid d-flex flex-column p-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="/entrenadores/comidas"><i class="fas fa-apple-alt"></i><span>Comidas</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/entrenadores/dietas"><i class="far fa-calendar-alt"></i><span>Dietas</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entrenadores/dietas"><i class="far fa-calendar-alt"></i><span><strong>Dietas</strong></span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/entrenadores/ejercicios"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
                                 <path d="M20.2739 9.86883L16.8325 4.95392L18.4708 3.80676L21.9122 8.72167L20.2739 9.86883Z" fill="currentColor"></path>
                                 <path d="M18.3901 12.4086L16.6694 9.95121L8.47783 15.687L10.1985 18.1444L8.56023 19.2916L3.97162 12.7383L5.60992 11.5912L7.33068 14.0487L15.5222 8.31291L13.8015 5.8554L15.4398 4.70825L20.0284 11.2615L18.3901 12.4086Z" fill="currentColor"></path>
                                 <path d="M20.7651 7.08331L22.4034 5.93616L21.2562 4.29785L19.6179 5.445L20.7651 7.08331Z" fill="currentColor"></path>
                                 <path d="M7.16753 19.046L3.72607 14.131L2.08777 15.2782L5.52923 20.1931L7.16753 19.046Z" fill="currentColor"></path>
                                 <path d="M4.38208 18.5549L2.74377 19.702L1.59662 18.0637L3.23492 16.9166L4.38208 18.5549Z" fill="currentColor"></path>
-                            </svg><span><strong>Ejercicios</strong></span></a></li>
+                            </svg><span>Ejercicios</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/entrenadores/rutinas"><i class="far fa-calendar-alt"></i><span>Rutinas</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"></div>
@@ -49,27 +49,12 @@
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <ol class="breadcrumb" style="margin-top: 10px;margin-left: 10px;">
-                    <li class="breadcrumb-item"><a href="/entrenadores/"><span>Inicio</span></a></li>
-                    <li class="breadcrumb-item"><a href="/entrenadores/ejercicios"><span>Ejercicios</span></a></li>
-                    <li class="breadcrumb-item"><span>{{ grupo }}</span></li>
-                </ol>
                 <div class="container">
                     <div>
                         <h3 class="text-dark mb-4"></h3>
                     </div>
-                    <h1 class="text-dark mb-4">{{ grupo }}</h1>
+                    <h1 class="text-dark mb-4">Dietas</h1>
                 </div>
-                {% with mensajes = get_flashed_messages() %}
-                    {% if mensajes %}
-                        {% for m in mensajes %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ m }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3">
@@ -81,24 +66,53 @@
                         <div class="col-md-3">
                             <p id="dataTable_info-3" class="dataTables_info" role="status" aria-live="polite"></p>
                         </div>
-                        <div class="col-md-3"><button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#modal_nuevo_ejercicio" style="background: rgb(59,153,224);">Nuevo Ejercicio</button></div>
+                        <div class="col-md-3"><button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#modal_nueva_dieta" style="background: rgb(59,153,224);">Nueva Dieta</button></div>
                     </div>
                 </div>
-                {% for e in ejercicios %}
-                    <div class="row" style="margin: 0px;padding: 20px;width: auto;height: auto;">
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4" style="padding: 0px;height: auto;"><img src="/uploads/ejc_{{ e.0 }}.{{ e.3 }}" style="width: 100%;height: auto;"></div>
-                        <div class="w-100 d-sm-block d-md-none d-lg-none d-xl-none"></div>
-                        <div class="col" style="padding: 0px;min-width: auto;">
-                            <div class="card">
-                                <div class="card-body" style="height: auto;width: auto;">
-                                    <h4 class="card-title">{{ e.1 }}</h4>
-                                    <p class="card-text">{{ e.2 }}</p><button class="btn btn-primary float-start" type="button" data-bs-toggle="modal" data-bs-target="#modal_editar_ejercicio" style="background: #4e73df;margin-right: 2.5px;" onClick="funcion('{{e.0}}', '{{e.1}}', '{{e.2}}')">Editar</button><a href="/entrenadores/ejercicios/eliminar_ejercicio/{{ e.0 }}_{{ grupo }}"><button class="btn btn-primary" type="button" style="background: rgb(225,21,21);margin-left: 2.5px;">Eliminar</button>
+                <div>
+                    <h3 class="text-dark mb-4"></h3>
+                </div>
+                {% for objetivo in dietas %}
+                    <div class="container" id="{{ objetivo }}">
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                                    <h3 class="text-dark mb-0">Para {{ objetivo }}</h3>
                                 </div>
                             </div>
                         </div>
+                        {% with mensajes = get_flashed_messages() %}
+                            {% if mensajes %}
+                                {% for m in mensajes %}
+                                    {% set aux = m.split('_') %}
+                                    {% if aux.1 == intensidad %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ aux.0 }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        {% for dieta in dietas[objetivo] %}
+                        <div class="row" style="margin: 0px;padding: 20px;width: auto;height: auto;">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4" style="padding: 0px;height: auto;"><img src="{{ url_for('.static', filename='img/dieta.png') }}" style="width: 100%;height: auto;"></div>
+                            <div class="w-100 d-sm-block d-md-none d-lg-none d-xl-none"></div>
+                            <div class="col" style="padding: 0px;min-width: auto;">
+                                <div class="card">
+                                    <div class="card-body" style="height: auto;width: auto;">
+                                        <h4 class="card-title">{{ dieta.1 }}</h4>
+                                        <h1></h1>
+                                        <p class="card-text">{{ dieta.2 }}</p>
+                                        <p class="card-text"><strong>Objetivo:</strong> {{ dieta.3 }}</p><a class="card-link" href="/entrenadores/dietas/{{ dieta.0 }}"><button class="btn btn-primary" type="button">Editar</button></a><a href="/entrenadores/dietas/eliminar_dieta/{{ dieta.0 }}_{{ objetivo }}"><button class="btn btn-primary" type="button" style="background: rgb(225,21,21);margin-left: 2.5px;">Eliminar</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
+                    <br>
                 {% endfor %}
-            </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © Retofit 2022</span></div>
@@ -106,52 +120,21 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal_nuevo_ejercicio">
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal_nueva_dieta">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Nuevo ejercicio</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title">Nueva dieta</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/entrenadores/ejercicios/add_ejercicio" method="POST" enctype="multipart/form-data">
+                <form action="/entrenadores/dietas/add_dieta" method="POST">
                     <div class="modal-body">
                             <p>Nombre</p><input class="form-control" type="text" name="nombre">
                             <p>Descripción</p><textarea class="form-control" name="descripcion"></textarea>
-                            <p>Grupo muscular</p><select class="form-select" name="grupo">
-                                {% for g in grupos %}
-                                    {% if g == grupo %}
-                                        <option value="{{ g }}" selected>{{ g }}</option>
-                                    {% else %}
-                                        <option value="{{ g }}">{{ g }}</option>
-                                    {% endif %}
-                                {% endfor %}
+                            <p>Objetivo</p><select class="form-select" name="objetivo">
+                                <option value="bajar peso" selected="">Bajar peso</option>
+                                <option value="mantener peso">Mantener peso</option>
+                                <option value="subir peso">Subir peso</option>
                             </select>
-                            <p>Imagen</p><input class="form-control" type="file" name="imagen">
-                    </div>
-                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cerrar</button><button class="btn btn-light" type="submit" data-bs-dismiss="modal" style="background: rgb(59,153,224);color: rgb(255,255,255);">Guardar</button></div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal_editar_ejercicio">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Editar ejercicio</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="" method="POST" enctype="multipart/form-data" id="formulario">
-                    <div class="modal-body">
-                            <p>Nombre</p><input class="form-control" type="text" name="nombre" value="", id="nombre">
-                            <p>Descripción</p><textarea class="form-control" name="descripcion" value="", id="descripcion"></textarea>
-                            <p>Grupo muscular</p><select class="form-select" name="grupo">
-                                {% for g in grupos %}
-                                    {% if g == grupo %}
-                                        <option value="{{ g }}" selected>{{ g }}</option>
-                                    {% else %}
-                                        <option value="{{ g }}">{{ g }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                            <p>Imagen</p><input class="form-control" type="file" name="imagen">
                     </div>
                     <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cerrar</button><button class="btn btn-light" type="submit" data-bs-dismiss="modal" style="background: rgb(59,153,224);color: rgb(255,255,255);">Guardar</button></div>
                 </form>
@@ -162,13 +145,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="{{ url_for('.static', filename='js/Simple-Slider.js') }}"></script>
     <script src="{{ url_for('.static', filename='js/theme.js') }}"></script>
-    <script type="text/javascript">
-        function funcion(id, nombre, descripcion){
-            document.getElementById("formulario").action = "/entrenadores/ejercicios/editar_ejercicio/" + id;
-            document.getElementById("nombre").value = nombre;
-            document.getElementById("descripcion").value = descripcion;
-       }
-   </script>
 </body>
 
 </html>

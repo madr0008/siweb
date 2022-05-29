@@ -79,36 +79,6 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script>
-        function funcionMas(n) {
-            num = parseInt(n);
-            s = document.getElementsByClassName("swiper-button-next")[0];
-            s2 = document.getElementsByClassName("swiper-button-prev")[0];
-            aux = parseInt(s.id) + 1 
-            if (aux == num) {
-                s.style.display = "none";
-            }
-            if (aux > 1) {
-                s2.style.display = "block";
-            }
-            s.id = String(aux)
-            s2.id = String(aux)
-        }
-        function funcionMenos(n) {
-            num = parseInt(n);
-            s = document.getElementsByClassName("swiper-button-next")[0];
-            s2 = document.getElementsByClassName("swiper-button-prev")[0];
-            aux = parseInt(s2.id) - 1 
-            if (aux == 1) {
-                s2.style.display = "none";
-            }
-            if (aux < num) {
-                s.style.display = "block";
-            }
-            s.id = String(aux)
-            s2.id = String(aux)
-        }
-    </script>
     <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="{{ url_for('.static', filename='js/Simple-Slider.js') }}"></script>

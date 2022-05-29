@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Mi rutina - Retofit</title>
+    <title>Mi dieta - Retofit</title>
     <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
@@ -33,7 +33,7 @@
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(59,153,224);">
             <div class="container-fluid d-flex flex-column p-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/clientes/dieta"><i class="fas fa-apple-alt"></i><span>Dieta</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/clientes/dieta"><i class="fas fa-apple-alt"></i><span><strong>Dieta</strong></span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/clientes/clases"><i class="far fa-calendar-alt"></i><span>Clases</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/clientes/rutina"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
                                 <path d="M20.2739 9.86883L16.8325 4.95392L18.4708 3.80676L21.9122 8.72167L20.2739 9.86883Z" fill="currentColor"></path>
@@ -41,7 +41,7 @@
                                 <path d="M20.7651 7.08331L22.4034 5.93616L21.2562 4.29785L19.6179 5.445L20.7651 7.08331Z" fill="currentColor"></path>
                                 <path d="M7.16753 19.046L3.72607 14.131L2.08777 15.2782L5.52923 20.1931L7.16753 19.046Z" fill="currentColor"></path>
                                 <path d="M4.38208 18.5549L2.74377 19.702L1.59662 18.0637L3.23492 16.9166L4.38208 18.5549Z" fill="currentColor"></path>
-                            </svg><span><strong>Rutina</strong></span></a></li>
+                            </svg><span>Rutina</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"></div>
             </div>
@@ -60,30 +60,30 @@
                         <div class="col-md-3">
                             <p id="dataTable_info-3" class="dataTables_info" role="status" aria-live="polite"></p>
                         </div>
-                        <div class="col-md-3"><a href="/clientes/elegir_rutina"><button class="btn btn-primary float-end" style="background: rgb(59,153,224);">Cambiar de Rutina</button></a></div>
+                        <div class="col-md-3"><a href="/clientes/elegir_dieta"><button class="btn btn-primary float-end" style="background: rgb(59,153,224);">Cambiar de Dieta</button></a></div>
                     </div>
                 </div>
                 <div class="container">
                     <div>
                         <h3 class="text-dark mb-4"></h3>
-                    </div><h1 class="text-dark mb-4">Mi rutina: {{ datosRutina.1 }}</h1>
+                    </div><h1 class="text-dark mb-4">Mi dieta: {{ datosDieta.1 }}</h1>
                     <div>
                         <h3 class="text-dark mb-4"></h3>
                     </div>
-                    <p>{{ datosRutina.2 }}</p>
+                    <p>{{ datosDieta.2 }}</p>
                     <div>
                         <h3 class="text-dark mb-4"></h3>
                     </div>
-                    <p><strong>Intensidad:</strong> {{ datosRutina.3 }}</p>
+                    <p><strong>Intensidad:</strong> {{ datosDieta.3 }}</p>
                     <br>
-                        <h3 class="text-dark mb-0">Hoy es {{ dia }}, toca entrenar {{ grupos }}</h3>
+                        <h3 class="text-dark mb-0">Hoy es {{ dia }}, toca comer {{ macros }}</h3>
                     <br>
                 </div>
                 <form action="/clientes/cambiar_pesos", method="POST">
                     <div class="simple-slider">
                         <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    {% for ejercicio in ejercicios %}
+                                    {% for comida in comidas %}
                                         <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;">
                                             <div class="card" style="height: 500px; display:flex; align-items:center;">
                                                 <div class="card-body" style="height: 500px; display:flex; align-items:center;">
@@ -91,18 +91,15 @@
                                                         <div class="row" style="height: 500px; display:flex; align-items:center;">
                                                             <div class="col-md-6">
                                                                 <div style="padding-left:10px">
-                                                                    <h1>{{ datosEjercicios[ejercicio.0].1 }}</h1>
-                                                                    <h4>Grupo muscular: {{ datosEjercicios[ejercicio.0].3 }}</h4>
-                                                                    <p>{{ datosEjercicios[ejercicio.0].2 }}</p>
-                                                                    <p><strong>Series:</strong>&nbsp;{{ ejercicio.1 }}<br>
-                                                                        <strong>Repeticiones:</strong>&nbsp;{{ ejercicio.2 }}
-                                                                    </p>
-                                                                    <label><strong>Peso (kg):</strong>&nbsp;</label><input type="number" style="width: 50px;" name="pesos" value="{{ pesos[ejercicio.0] }}">
+                                                                    <h1>{{ datosComidas[comida.0].1 }}</h1>
+                                                                    <h4>Macronutrientes: {{ datosComidas[comida.0].3 }}</h4>
+                                                                    <p>{{ datosComidas[comida.0].2 }}</p>
+                                                                    <p><strong>Cantidad:</strong>&nbsp;{{ comida.1 }} gramos</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div>
-                                                                    <img src="/uploads/ejc_{{ ejercicio.0 }}.{{ datosEjercicios[ejercicio.0].4 }}" style="width: 100%; padding-right: 10px;">
+                                                                    <img src="/uploads/comida_{{ comida.0 }}.{{ datosComidas[comida.0].4 }}" style="width: 100%; padding-right: 10px;">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -116,7 +113,7 @@
                                             <div class="card-body" style="display:flex; align-items:center;">
                                                 <div style="padding-left:10px">
                                                     <h1>¡{{ dia }} terminado!</h1>
-                                                    <h4>Has trabajado el/los grupos muscular(es) {{ grupos }}</h4>
+                                                    <h4>Has comido el/los macronutriente(s) {{ macros }}</h4>
                                                     <p>Tu esfuerzo habrá valido la pena, ¡no lo dudes!<br>Ahora a descansar... ¡Nos vemos mañana!</p>
                                                 </div>
                                             </div>
