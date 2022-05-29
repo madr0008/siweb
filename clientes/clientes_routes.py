@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
 from app import app
+from os.path import exists
 
 
 #Creamos la Blueprint
@@ -13,14 +14,23 @@ clientes = Blueprint('clientes', __name__, template_folder='templates', static_f
 #Importamos la base de datos
 from app import mysql
 
+#Función para comprobar el tipo de usuario
+def comprobarTipo() :
+    if current_user.tipo != 'clientes' :
+        logout_user()
+        return False
+    return True
 
-#ENTRENADOR
+
+#CLIENTE
 
 #Página principal
 
 @clientes.route('/clientes/')
 @login_required
 def index() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     cur = mysql.connection.cursor()
     dni = current_user.dni
     hoy = date.today()
@@ -35,7 +45,10 @@ def index() :
         nombreRutina = nombreRutina[0]
     else :
         nombreRutina = "Ninguna"
-    return render_template('index_clientes.html', nClases = nClases, nombreRutina = nombreRutina)
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('index_clientes.html', nClases = nClases, nombreRutina = nombreRutina, foto = foto)
 
 
 #Rutina
@@ -43,9 +56,16 @@ def index() :
 @clientes.route('/clientes/rutina')
 @login_required
 def rutina() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     diaSemana = datetime.today().weekday()
-    diasSemana = ['lunes','martes','miercoles','jueves','viernes']
+    diasSemana = ['lunes','martes','miercoles','jueves','viernes', 'sabado', 'domingo']
     strDiaSemana = diasSemana[diaSemana]
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    if diaSemana > 4 :
+        return render_template('rutina_cliente_no.html', dia = strDiaSemana, foto = foto)
     cur = mysql.connection.cursor()
     sql = 'SELECT idRutina, ' + strDiaSemana + ' FROM rutinas_clientes WHERE dniCliente = %s'
     cur.execute(sql, [current_user.dni])
@@ -73,8 +93,11 @@ def rutina() :
                         grupos.append(datosEjercicios[int(campos[0])][3])
         strGrupos = ""
         for i in range(len(grupos) - 1) :
-            strGrupos += grupos[i] + ","
-        grupos = strGrupos[:len(strGrupos) - 1] + " y " + grupos[len(grupos) - 1]
+            strGrupos += grupos[i] + ", "
+        if len(grupos) > 1 :
+            grupos = strGrupos[:len(strGrupos) - 2] + " y " + grupos[len(grupos) - 1]
+        else :
+            grupos = grupos[len(grupos) - 1]
         cont = 0
         if len(listaPesos) > 1 or listaPesos[0] != '' :
             for ejc in ejercicios :
@@ -86,7 +109,7 @@ def rutina() :
         else :
             for ejc in ejercicios :
                 pesos[ejc[0]] = 0
-        return render_template('rutina_cliente.html', datosRutina = datosRutina, ejercicios = ejercicios, pesos = pesos, dia = strDiaSemana, datosEjercicios = datosEjercicios, grupos = grupos)
+        return render_template('rutina_cliente.html', datosRutina = datosRutina, ejercicios = ejercicios, pesos = pesos, dia = strDiaSemana, datosEjercicios = datosEjercicios, grupos = grupos, foto = foto)
     else :
         return redirect('/clientes/elegir_rutina')
 
@@ -94,18 +117,25 @@ def rutina() :
 @clientes.route('/clientes/elegir_rutina')
 @login_required
 def elegir_rutina() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     cur = mysql.connection.cursor()
     intensidades = ['baja','media','alta']
     rutinas = dict()
     for intensidad in intensidades :
         cur.execute('SELECT * FROM rutinas WHERE intensidad = %s', [intensidad])
         rutinas[intensidad] = cur.fetchall()
-    return render_template('elegir_rutina.html', rutinas = rutinas)
+        foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('elegir_rutina.html', rutinas = rutinas, foto = foto)
 
 
 @clientes.route('/clientes/elegir_rutina/<string:id>')
 @login_required
 def elegir_rutina_id(id) :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     dni = current_user.dni
     cur = mysql.connection.cursor()
     cur.execute('INSERT INTO rutinas_clientes (dniCliente, idRutina) VALUES (%s, %s) ON DUPLICATE KEY UPDATE idrutina=%s', (dni, id, id))
@@ -116,6 +146,8 @@ def elegir_rutina_id(id) :
 @clientes.route('/clientes/cambiar_pesos', methods=['POST'])
 @login_required
 def cambiar_pesos() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     if request.method == 'POST':
         dni = current_user.dni
         diaSemana = datetime.today().weekday()
@@ -143,6 +175,8 @@ def cambiar_pesos() :
 @clientes.route('/clientes/clases')
 @login_required
 def clases() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     hoy = date.today()
     dia_semana = datetime.today().weekday()
     lunes = hoy - timedelta(days=dia_semana)
@@ -151,6 +185,8 @@ def clases() :
 @clientes.route('/clientes/clases/<string:aux>')
 @login_required
 def clases_fecha(aux) :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     aux = aux.split('_')
     if aux[1] == '0' :
         lunes = datetime.strptime(aux[0], '%Y-%m-%d').date()
@@ -171,11 +207,16 @@ def clases_fecha(aux) :
     dni = current_user.dni
     cur.execute('SELECT fecha, hora FROM clases_clientes WHERE ((fecha BETWEEN CAST(%s AS DATE) AND CAST(%s AS DATE)) AND (dniCliente = %s))', (dias[0], dias[4], dni))
     clasesApuntado = cur.fetchall()
-    return render_template('clases.html', dias = dias, clases = clases, horas = horas, clasesApuntado = clasesApuntado, lunes = lunes)
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('clases.html', dias = dias, clases = clases, horas = horas, clasesApuntado = clasesApuntado, lunes = lunes, foto = foto)
 
 @clientes.route('/clientes/apuntar_a_clase/<string:cadena>', methods=['POST'])
 @login_required
 def add_clase(cadena) :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     if request.method == 'POST':
         fecha = cadena.split('_')[0]
         hora = cadena.split('_')[1]
@@ -191,12 +232,14 @@ def add_clase(cadena) :
 @clientes.route('/clientes/desapuntar_de_clase/<string:cadena>', methods=['POST'])
 @login_required
 def eliminar_clase(cadena) :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
     if request.method == 'POST':
         fecha = cadena.split('_')[0]
         hora = cadena.split('_')[1]
         dni = current_user.dni
         cur = mysql.connection.cursor()
-        cur.execute('DELETE FROM clases_clientes WHERE dniCliente = %s', [dni])
+        cur.execute('DELETE FROM clases_clientes WHERE (dniCliente = %s AND fecha = %s AND hora = %s)', (dni, fecha, hora))
         cur.execute('UPDATE clases SET plazas_actuales = (plazas_actuales + 1) WHERE (fecha = %s AND hora = %s)', (fecha, hora))
         mysql.connection.commit()
         flash('Te has desapuntado de la clase')
@@ -208,7 +251,45 @@ def eliminar_clase(cadena) :
 @clientes.route('/clientes/perfil')
 @login_required
 def perfil() :
-    return render_template('perfil_cliente.html')
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('perfil_cliente.html', foto = foto)
+
+@clientes.route('/clientes/cambiar_contrasena', methods=['POST'])
+@login_required
+def cambiar_contrasena() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    if request.method == 'POST' :
+        nueva = request.form['nueva']
+        confirmada = request.form['confirmada']
+        cur = mysql.connection.cursor()
+        if nueva == confirmada :
+            passwd = generate_password_hash(nueva)
+            cur.execute('UPDATE login SET password = %s WHERE email = %s', (passwd, current_user.id))
+            mysql.connection.commit()
+            flash('La contraseña se ha cambiado correctamente_0')
+        else :
+            flash('Las nuevas contraseñas no coinciden_1')
+    return redirect('/clientes/perfil')
+
+@clientes.route('/clientes/cambiar_foto', methods=['POST'])
+@login_required
+def cambiar_foto() :
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    if request.method == 'POST' :
+        foto = request.files['foto']
+        aux = foto.filename.split('.')
+        extension = aux[len(aux) - 1]
+        foto.save(os.path.join(app.config['UPLOAD_FOLDER'], str(current_user.dni) + '.' + extension))
+        cur = mysql.connection.cursor()
+        cur.execute('UPDATE login SET extension = %s WHERE email = %s', (extension, current_user.id))
+        mysql.connection.commit()
+    return redirect('/clientes/perfil')
 
 
 #Log out
@@ -223,4 +304,9 @@ def logout() :
 @clientes.route('/clientes/404')
 @login_required
 def error404() :
-    return render_template('404_cliente.html')
+    if not comprobarTipo() :
+        return redirect(url_for('public.login'))
+    foto = "default.jpeg"
+    if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
+        foto = str(current_user.dni) + '.' + current_user.extension
+    return render_template('404_cliente.html', foto = foto)

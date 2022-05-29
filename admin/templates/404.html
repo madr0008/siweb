@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('.static', filename='css/Nunito.css') }}">
     <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
+    <link rel="icon" href="{{ url_for('.static', filename='img/icono.png') }}">
 </head>
 
 <body id="page-top">
@@ -17,7 +18,7 @@
             </a>
             <ul class="navbar-nav flex-nowrap ms-auto">
                 <li class="nav-item dropdown no-arrow">
-                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="{{ url_for('.static', filename='img/avatars/avatar1.jpeg') }}"></a>
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="/uploads/{{ foto }}"></a>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="/admin/perfil"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Perfil</a>
                             <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ url_for('admin.logout') }}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                         </div>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>404</title>
+    <title>Mi rutina - Retofit</title>
     <link rel="stylesheet" href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="{{ url_for('.static', filename='fonts/fontawesome-all.min.css') }}">
@@ -20,7 +20,7 @@
             </a>
             <ul class="navbar-nav flex-nowrap ms-auto">
                 <li class="nav-item dropdown no-arrow">
-                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="/uploads/{{ foto }}"></a>
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">{{ current_user.nombre }}</span><img class="border rounded-circle img-profile" style="height:50px;" src="/uploads/{{ foto }}" style="height:50px;"></a>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="/clientes/perfil"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Perfil</a>
                             <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ url_for('clientes.logout') }}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                         </div>
@@ -41,18 +41,36 @@
                                 <path d="M20.7651 7.08331L22.4034 5.93616L21.2562 4.29785L19.6179 5.445L20.7651 7.08331Z" fill="currentColor"></path>
                                 <path d="M7.16753 19.046L3.72607 14.131L2.08777 15.2782L5.52923 20.1931L7.16753 19.046Z" fill="currentColor"></path>
                                 <path d="M4.38208 18.5549L2.74377 19.702L1.59662 18.0637L3.23492 16.9166L4.38208 18.5549Z" fill="currentColor"></path>
-                            </svg><span>Rutina</span></a></li>
+                            </svg><span><strong>Rutina</strong></span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div class="text-center mt-5">
-                <div class="error mx-auto" data-text="404">
-                    <p class="m-0">404</p>
+            <div id="content">
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p id="dataTable_info-1" class="dataTables_info" role="status" aria-live="polite"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p id="dataTable_info-2" class="dataTables_info" role="status" aria-live="polite"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p id="dataTable_info-3" class="dataTables_info" role="status" aria-live="polite"></p>
+                        </div>
+                        <div class="col-md-3"><a href="/clientes/elegir_rutina"><button class="btn btn-primary float-end" style="background: rgb(59,153,224);">Cambiar de Rutina</button></a></div>
+                    </div>
                 </div>
-                <p class="text-dark mb-5 lead">Page Not Found</p>
-                <p class="text-black-50 mb-0">Parece que te has perdido...</p><a href="/clientes/">← Volver al inicio</a>
+                <div class="container">
+                    <div>
+                        <h3 class="text-dark mb-4"></h3>
+                    </div><h1 class="text-dark mb-4">Hoy es {{ dia }}, ¡Toca descansar!</h1>
+                    <div>
+                        <h3 class="text-dark mb-4"></h3>
+                    </div>
+                    <p>¡¡Recarga las pilas y nos vemos el lunes!!</p>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -61,6 +79,36 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
+    <script>
+        function funcionMas(n) {
+            num = parseInt(n);
+            s = document.getElementsByClassName("swiper-button-next")[0];
+            s2 = document.getElementsByClassName("swiper-button-prev")[0];
+            aux = parseInt(s.id) + 1 
+            if (aux == num) {
+                s.style.display = "none";
+            }
+            if (aux > 1) {
+                s2.style.display = "block";
+            }
+            s.id = String(aux)
+            s2.id = String(aux)
+        }
+        function funcionMenos(n) {
+            num = parseInt(n);
+            s = document.getElementsByClassName("swiper-button-next")[0];
+            s2 = document.getElementsByClassName("swiper-button-prev")[0];
+            aux = parseInt(s2.id) - 1 
+            if (aux == 1) {
+                s2.style.display = "none";
+            }
+            if (aux < num) {
+                s.style.display = "block";
+            }
+            s.id = String(aux)
+            s2.id = String(aux)
+        }
+    </script>
     <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
     <script src="{{ url_for('.static', filename='js/Simple-Slider.js') }}"></script>
