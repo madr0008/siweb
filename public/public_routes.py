@@ -63,9 +63,9 @@ def blog() :
     return render_template('blog.html')
 
 
-@public.route('/blog/articulo')
-def articulo() :
-    return render_template('blog-post.html')
+@public.route('/blog/articulo/<string:id>')
+def articulo(id) :
+    return render_template('blog-post-' + id + '.html')
 
 
 #Páginas de error

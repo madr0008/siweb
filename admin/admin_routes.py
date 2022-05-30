@@ -292,6 +292,7 @@ def cambiar_foto() :
         foto.save(os.path.join(app.config['UPLOAD_FOLDER'], str(current_user.dni) + '.' + extension))
         cur = mysql.connection.cursor()
         cur.execute('UPDATE login SET extension = %s WHERE email = %s', (extension, current_user.id))
+        mysql.connection.commit()
     return redirect(url_for('.perfil'))
 
 

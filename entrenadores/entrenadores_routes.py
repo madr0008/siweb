@@ -283,7 +283,7 @@ def comidas() :
 def macro(macro) :
     if not comprobarTipo() :
         return redirect(url_for('public.login'))
-    macros = ['Carbohidratos', 'Proteínas', 'Grasas']
+    macros = ['Carbohidratos', 'Proteinas', 'Grasas']
     cur = mysql.connection.cursor()
     cur.execute('SELECT id, nombre, descripcion, extension FROM comidas WHERE macro = %s', [macro])
     comidas = cur.fetchall()

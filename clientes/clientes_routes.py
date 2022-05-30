@@ -45,10 +45,16 @@ def index() :
         nombreRutina = nombreRutina[0]
     else :
         nombreRutina = "Ninguna"
+    cur.execute('SELECT nombre FROM dietas, dietas_clientes WHERE ((idDieta = id) AND (dniCliente = %s))', [dni])
+    nombreDieta = cur.fetchone()
+    if nombreDieta != None :
+        nombreDieta = nombreDieta[0]
+    else :
+        nombreDieta = "Ninguna"
     foto = "default.jpeg"
     if exists(app.config['UPLOAD_FOLDER'] + "/" + str(current_user.dni) + '.' + current_user.extension) :
         foto = str(current_user.dni) + '.' + current_user.extension
-    return render_template('index_clientes.html', nClases = nClases, nombreRutina = nombreRutina, foto = foto)
+    return render_template('index_clientes.html', nClases = nClases, nombreRutina = nombreRutina, nombreDieta = nombreDieta, foto = foto)
 
 
 #Rutina
