@@ -7,7 +7,7 @@ En este repositorio se encuentra el código del sitio web desarrollado para la a
 Se puede acceder al dicho sitio web a través del siguiente enlace:
 http://retofit.eu.pythonanywhere.com/
 
-##Tecnologías empleadas
+## Tecnologías empleadas
 
 La implementación de este sitio web se ha llevado a cabo empleando las siguientes herramientas:
 - Bootstrap Studio, para el diseño de la web
@@ -15,7 +15,7 @@ La implementación de este sitio web se ha llevado a cabo empleando las siguient
 - Python, con el framework Flask, para el back-end
 - Base de datos SQL
 
-##Usuarios
+## Usuarios
 
 Para comprobar el funcionamiento del sitio web al completo, se puede acceder con cuentas de distinto rango:
 - Administrador: email: admin@retofit.es , contraseña: 123
